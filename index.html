@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Napoli Goat - Store Profile</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0d0d0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0d0d0f, #220938, #12041f, #1b072e, #0d0d0f);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, rgba(126, 34, 206, 0.05) 50%, transparent 80%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+            z-index: 9999;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(20, 16, 28, 0.85);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(107, 33, 168, 0.3);
+            backdrop-filter: blur(12px);
+        }
+
+        .cover-section {
+            width: 100%;
+            height: 240px;
+            position: relative;
+            background-image: url('cover.gif.gif');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        .profile-header-content {
+            padding: 0 30px 20px 30px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: -60px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid #14101c;
+            overflow: hidden;
+            background: #222;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            z-index: 5;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-details {
+            flex-grow: 1;
+            margin-top: 10px;
+        }
+
+        .profile-name-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .verified-badge {
+            color: #a855f7;
+            font-size: 20px;
+        }
+
+        .profile-username {
+            color: #b8b8c2;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: #9333ea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #7e22ce;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-store-large {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #9333ea, #c084fc, #ec4899);
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.5);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .btn-store-large:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.7);
+            filter: brightness(1.1);
+        }
+
+        .social-icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .social-icon-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(147, 51, 234, 0.3);
+        }
+
+        .social-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 30px;
+            padding: 0 30px 20px 30px;
+            font-size: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-item span {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-item {
+            color: #a0a0ab;
+        }
+
+        .profile-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-box {
+            background: rgba(28, 22, 38, 0.7);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card-box:hover {
+            transform: translateY(-2px);
+            border-color: rgba(168, 85, 247, 0.5);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #c084fc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .discord-server-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(15, 12, 22, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: background 0.2s;
+        }
+
+        .discord-server-preview:hover {
+            background: rgba(147, 51, 234, 0.15);
+        }
+
+        .server-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #5865F2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .server-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .server-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .server-info p {
+            font-size: 12px;
+            color: #8e8e93;
+        }
+
+        .bio-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e4e4e7;
+            white-space: pre-line;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #14101c;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            margin: 40px auto;
+            padding: 30px;
+            width: 100%;
+            max-width: 750px;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(107, 33, 168, 0.5);
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: 15px;
+            background: linear-gradient(135deg, #c084fc, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .store-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .store-item {
+            background: rgba(25, 18, 38, 0.8);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .store-item:hover {
+            border-color: #a855f7;
+            background: rgba(147, 51, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .store-icon-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            flex-shrink: 0;
+        }
+
+        .store-info h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #c084fc;
+            margin-bottom: 5px;
+        }
+
+        .store-info p {
+            font-size: 13px;
+            color: #d4d4d8;
+            line-height: 1.4;
+        }
+
+        .store-footer-msg {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: #c084fc;
+            font-style: italic;
+            line-height: 1.5;
+            border-top: 1px solid rgba(168, 85, 247, 0.2);
+            padding-top: 15px;
+        }
+
+        .profile-footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            color: #636366;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <div class="profile-container">
+        <!-- Cover Section -->
+        <div class="cover-section">
+            <div class="cover-overlay"></div>
+        </div>
+
+        <!-- Header Info -->
+        <div class="profile-header-content">
+            <div class="avatar-container">
+                <img src="avatar.jpg.jpg" alt="Napoli Goat">
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-name-row">
+                    <h1 class="profile-name">𝐍𝐚𝐩𝐨𝐥𝐢 𝐆𝐨𝐚𝐭</h1>
+                    <span class="verified-badge">&#10004;</span>
+                </div>
+                <div class="profile-username">@napoli_goat</div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="followBtn" onclick="toggleFollow()">Follow</button>
+                <a href="https://www.instagram.com/direct/new/" target="_blank" class="btn btn-secondary">Msg</a>
+                
+                <a href="https://www.instagram.com/YASSINE.ELOTMANI_" target="_blank" class="social-icon-btn" title="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+
+                <a href="https://discord.com/users/1316534340615667855" target="_blank" class="social-icon-btn" title="Discord Direct">
+                    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.011c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                </a>
+
+                <a href="https://open.spotify.com/user/31yengacotjtfd3z4extcm233ame" target="_blank" class="social-icon-btn" title="Spotify">
+                    <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.599-.12-.42.18-.78.6-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.54.66.281 1.08zm1.44-3.84c-.301.48-.901.66-1.381.36-3.24-1.98-8.16-2.58-11.94-1.44-.54.18-1.14-.12-1.32-.66-.18-.54.12-1.14.66-1.32 4.38-1.32 9.84-.66 13.62 1.62.48.3.66.9.36 1.44zm.12-4.08C15.24 7.32 8.88 7.08 5.16 8.22c-.66.18-1.38-.18-1.56-.84-.18-.66.18-1.38.84-1.56 4.32-1.32 11.34-1.02 15.66 1.56.6.36.78 1.14.42 1.74-.36.6-1.14.78-1.74.42z"/></svg>
+                </a>
+
+                <button class="btn-store-large" onclick="openStoreModal()">
+                    🛒 Show Store
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item"><span>0</span> posts</div>
+            <div class="stat-item"><span>16.7k</span> followers</div>
+            <div class="stat-item"><span>10</span> following</div>
+        </div>
+
+        <div class="profile-body">
+            <div class="card-box">
+                <div class="card-title">Discord Community</div>
+                <a href="https://discord.gg/bZMKVmNZ5" target="_blank" class="discord-server-preview">
+                    <div class="server-icon">
+                        <img src="server-logo.png.png" alt="Server Logo">
+                    </div>
+                    <div class="server-info">
+                        <h4>Our Server</h4>
+                        <p>Click to join & accept invite</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card-box">
+                <div class="card-title">Bio</div>
+                <div class="bio-text">𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗧𝗼 𝗡𝗮𝗽𝗼𝗹𝗶 𝗦𝘁𝗼𝗿𝗲 𝗳𝗼𝗿 𝗔𝗹𝗹 𝗰𝗼𝗺𝗽𝘂𝘁𝗲𝗿 𝗻𝗲𝗲𝗱𝘀
+e-mail : yassineelotmani69@gmail.com
+whatssap : 0645949075</div>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            &copy; 2026 𝐍𝐚𝐩𝐨𝐥𝐢 𝐆𝐨𝐚𝐭. All Rights Reserved.
+        </div>
+    </div>
+
+    <!-- Store Modal -->
+    <div id="storeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeStoreModal()">&times;</span>
+            <div class="modal-title">Napoli Store Services</div>
+            
+            <div class="store-items-list">
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20buy/fill%20Steam%20account" target="_blank" class="store-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Steam" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Steam Accounts</h5>
+                        <p>𝙁𝙞𝙡𝙡 𝙤𝙪𝙩 𝙢𝙮 𝙥𝙚𝙧𝙨𝙤𝙣𝙖𝙡 𝙖𝙘𝙘𝙤𝙪𝙣𝙩 𝙤𝙧 𝙗𝙪𝙮 𝙧𝙚𝙖𝙙𝙮-𝙢𝙖𝙙𝙚 𝙖𝙘𝙘𝙤𝙪𝙣𝙩𝙨 𝙬𝙞𝙩𝙝 𝙬𝙝𝙖𝙩𝙚𝙫𝙚𝙧 𝙮𝙤𝙪 𝙬𝙖𝙣𝙩.</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20buy%20Epic%20Games%20account" target="_blank" class="store-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" alt="Epic Games" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Epic Games Accounts</h5>
+                        <p>𝘽𝙪𝙮 𝙧𝙚𝙖𝙙𝙮-𝙢𝙖𝙙𝙚 𝙖𝙘𝙘𝙤𝙪𝙣𝙩𝙨 𝙖𝙩 𝙖 𝙫𝙚𝙧𝙮 𝙧𝙚𝙖𝙨𝙤𝙣𝙖𝙗𝙡𝙚 𝙥𝙧𝙞𝙘𝙚</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20buy%20Rockstar%20account" target="_blank" class="store-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Rockstar_Games_Logo.svg" alt="Rockstar" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Rockstar Games</h5>
+                        <p>𝘽𝙪𝙮 𝙧𝙚𝙖𝙙𝙮-𝙢𝙖𝙙𝙚 𝙖𝙘𝙘𝙤𝙪𝙣𝙩𝙨 𝙖𝙩 𝙖 𝙫𝙚𝙧𝙮 𝙧𝙚𝙖𝙨𝙤𝙣𝙖𝙗𝙡𝙚 𝙥𝙧𝙞𝙘𝙚</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20buy%20Discord%20Nitro" target="_blank" class="store-item">
+                    <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Discord Nitro</h5>
+                        <p>𝐛𝐮𝐲 𝐧𝐢𝐭𝐫𝐨 𝐟𝐨𝐫 𝟏 𝐦𝐨𝐧𝐭𝐡 𝐨𝐫 𝟑 𝐦𝐨𝐧𝐭𝐡 𝐨𝐟 𝐠𝐨𝐨𝐝 𝐩𝐫𝐢𝐜𝐞</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20buy%20fake%20viruses" target="_blank" class="store-item">
+                    <img src="https://api.iconify.design/lucide:skull.svg?color=%23c084fc" alt="Virus" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Fake Viruses</h5>
+                        <p>𝐁𝐮𝐲 𝐟𝐚𝐤𝐞 𝐯𝐢𝐫𝐮𝐬𝐞𝐬 𝐭𝐨 𝐭𝐫𝐢𝐜𝐤 𝐲𝐨𝐮𝐫 𝐟𝐫𝐢𝐞𝐧𝐝𝐬</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20create%20an%20application%20or%20website" target="_blank" class="store-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Web & App Development</h5>
+                        <p>𝘾𝙧𝙚𝙖𝙩𝙞𝙣𝙜 𝙖𝙥𝙥𝙡𝙞𝙘𝙖𝙩𝙞𝙤𝙣𝙨 𝙖𝙣𝙙 𝙬𝙚𝙗𝙨𝙞𝙩𝙚𝙨 𝙤𝙛 𝙖𝙣𝙮 𝙠𝙞𝙣𝙙 𝙖𝙩 𝙖 𝙫𝙚𝙧𝙮 𝙧𝙚𝙖𝙨𝙤𝙣𝙖𝙔𝙡𝙚 𝙥𝙧𝙞𝙘𝙚</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20get%20Spotify%20Premium" target="_blank" class="store-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Spotify Premium</h5>
+                        <p>𝐠𝐞𝐭 𝐩𝐫𝐞𝐦𝐢𝐮𝐦 𝐬𝐩𝐨𝐭𝐢𝐟𝐲 𝐨𝐟 𝐠𝐨𝐨𝐝 𝐩𝐫𝐢𝐜𝐞 (𝐟𝐨𝐫 𝐜𝐨𝐦𝐩𝐮𝐭𝐞𝐫𝐬)</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20have%20a%20computer%20problem" target="_blank" class="store-item">
+                    <img src="https://api.iconify.design/lucide:cpu.svg?color=%23c084fc" alt="PC Repair" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>PC Technical Support</h5>
+                        <p>𝐒𝐨𝐥𝐯𝐢𝐧𝐠 𝐚𝐧𝐲 𝐜𝐨𝐦𝐩𝐮𝐭𝐞𝐫 𝐩𝐫𝐨𝐛𝐥𝐞𝐦, 𝐧𝐨 𝐦𝐚𝐭𝐭𝐞𝐫 𝐰𝐡𝐚𝐭 𝐢𝐭 𝐢𝐬.</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20to%20create%20a%20Discord%20server" target="_blank" class="store-item">
+                    <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png" alt="Discord Server" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Discord Server Creation</h5>
+                        <p>𝐂𝐫𝐞𝐚𝐭𝐢𝐧𝐠 𝐚 𝐜𝐨𝐦𝐩𝐥𝐞𝐭𝐞 𝐃𝐢𝐬𝐜𝐨𝐫𝐝 𝐬𝐞𝐫𝐯𝐞𝐫 𝐰𝐢𝐭𝐡 𝐚𝐥𝐥 𝐢𝐭𝐬 𝐟𝐞𝐚𝐭𝐮𝐫𝐞𝐬 𝐯𝐨𝐢𝐜𝐞𝐬 & 𝐛𝐨𝐭𝐬 ...</p>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/212645949075?text=Hello,%20I%20want%20presentation/office%20services" target="_blank" class="store-item">
+                    <img src="https://api.iconify.design/vscode-icons:file-type-powerpoint.svg" alt="Office" class="store-icon-img">
+                    <div class="store-info">
+                        <h5>Office & Presentations</h5>
+                        <p>𝐜𝐫𝐞𝐚𝐭𝐞 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐩𝐫𝐞𝐬𝐞𝐧𝐭𝐚𝐭𝐢𝐨𝐧 𝐰𝐢𝐭𝐡 𝐰𝐨𝐫𝐝 & 𝐩𝐨𝐰𝐞𝐫𝐩𝐨𝐢𝐧𝐭 ... (𝐁𝐲 𝐬𝐩𝐞𝐜𝐢𝐚𝐥𝐢𝐬𝐭𝐬 𝐟𝐚𝐫 𝐫𝐞𝐦𝐨𝐯𝐞𝐝 𝐟𝐫𝐨𝐦 𝐚𝐧𝐲𝐭𝐡𝐢𝐧𝐠 𝐫𝐞𝐥𝐚𝐭𝐞𝐝 𝐭𝐨 𝐚𝐫𝐭𝐢𝐟𝐢𝐜𝐢𝐚𝐥 𝐢𝐧𝐭𝐞𝐥𝐥𝐢𝐠𝐞𝐧𝐜𝐞)</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="store-footer-msg">
+                𝘼𝙣𝙙 𝙢𝙖𝙣𝙮 𝙢𝙤𝙧𝙚 𝙨𝙚𝙧𝙫𝙞𝙘𝙚𝙨 𝙩𝙝𝙖𝙩 𝙘𝙖𝙣𝙣𝙤𝙩 𝙗𝙚 𝙢𝙚𝙣𝙩𝙞𝙤𝙣𝙚𝙙... 𝘿𝙤𝙣'𝙩 𝙛𝙤𝙧𝙜𝙚𝙩 𝙩𝙤 𝙘𝙤𝙣𝙩𝙖𝙘𝙩 𝙪𝙨.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check saved follow state on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const isFollowing = localStorage.getItem('napoli_following') === 'true';
+            const btn = document.getElementById('followBtn');
+            if (isFollowing) {
+                btn.innerText = 'Following';
+                btn.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                btn.style.color = '#fff';
+                btn.style.border = '1px solid rgba(255,255,255,0.3)';
+            }
+        });
+
+        function toggleFollow() {
+            const btn = document.getElementById('followBtn');
+            const isFollowing = localStorage.getItem('napoli_following') === 'true';
+
+            if (!isFollowing) {
+                localStorage.setItem('napoli_following', 'true');
+                btn.innerText = 'Following';
+                btn.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                btn.style.color = '#fff';
+                btn.style.border = '1px solid rgba(255,255,255,0.3)';
+            } else {
+                localStorage.setItem('napoli_following', 'false');
+                btn.innerText = 'Follow';
+                btn.style.backgroundColor = '#9333ea';
+                btn.style.color = '#fff';
+                btn.style.border = 'none';
+            }
+        }
+
+        function openStoreModal() {
+            document.getElementById('storeModal').style.display = 'block';
+        }
+
+        function closeStoreModal() {
+            document.getElementById('storeModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            let modal = document.getElementById('storeModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+    </script>
+</body>
+</html>
